@@ -5,7 +5,8 @@ from PyQt5.QtGui import QFont
 import PyQt5.QtCore
 import sys
 from random import shuffle
-from GetData import *
+from GetData import Question, getData
+
 
 class App(QWidget):
     
@@ -125,8 +126,12 @@ class App(QWidget):
             box.addStretch()
         return box
         
+
+def main():
+    app = QApplication(sys.argv)
+    questions = getData()
+    ex = App(questions)
+    sys.exit(app.exec_())
     
-app = QApplication(sys.argv)
-questions = getData()
-ex = App(questions)
-sys.exit(app.exec_())
+if __name__ == "__main__":
+    main()

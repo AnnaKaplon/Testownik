@@ -1,6 +1,7 @@
 import pandas as pd
 from random import shuffle
 
+
 class Question():
     
     def __init__(self, question, good_answer, wrong_answers):
@@ -20,6 +21,4 @@ def getData():
         questions.append(Question(row['question'], row['good_answer'], wrong_answers_list))
     shuffle(questions)
     return questions
-
-getData()
 
