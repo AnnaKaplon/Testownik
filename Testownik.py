@@ -23,13 +23,7 @@ class App(QWidget):
         self.setGeometry(200, 200, 450, 300)
         self.setWindowTitle('Testownik')
         
-        font = QFont()
-        font.setPointSize(15)
-        
-        self.question = QLabel(self.questions[0].question)
-        self.question.setMaximumHeight(50)
-        self.question.setFont(font)
-        questionBox = self.initHBox(self.question)
+        question_box = self.makeQuestionBox()
         
         self.group = QButtonGroup()
         answers = self.questions[0].getAllAnswers()
@@ -41,7 +35,6 @@ class App(QWidget):
         for n, button in enumerate(radio_button_list):
             self.group.addButton(button, n)
             
-        
         shuffle(radio_button_list)
         
         radio_button_box = QVBoxLayout()
@@ -68,6 +61,15 @@ class App(QWidget):
         self.button2.clicked.connect(self.onNextButtonClick)
         
         self.show()
+		
+	def makeQuestionBox(self)
+		font = QFont()
+        font.setPointSize(15)
+        
+        self.question = QLabel(self.questions[0].question)
+        self.question.setMaximumHeight(50)
+        self.question.setFont(font)
+        return self.initHBox(self.question)
         
     def onNextButtonClick(self):
         
