@@ -3,7 +3,7 @@ from random import shuffle
 
 
 class Question():
-    
+
     def __init__(self, question, good_answer, wrong_answers):
         self.question = question
         self.good_answer = good_answer
@@ -14,7 +14,7 @@ class Question():
     
 
 def getData():
-    df = pd.read_csv('Example.csv', encoding = 'windows-1250')
+    df = pd.read_csv('Example.csv', encoding = 'utf-8')
     questions = []
     for _, row in df.iterrows():
         wrong_answers_list = [answer for (key, answer) in row.items() if key != 'question' and key != 'good_answer']
