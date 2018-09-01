@@ -41,7 +41,6 @@ class App(QWidget):
         self.grid.addLayout(radio_button_box, 2, 1)
         self.grid.addWidget(empty_label, 3, 1)
         self.grid.addLayout(button_box, 5, 1)
-        self.grid.setAlignment(PyQt5.QtCore.Qt.AlignRight)
         
         self.check_button.clicked.connect(self.onCheckButtonClick)
         self.next_button.clicked.connect(self.onNextButtonClick)
@@ -57,18 +56,24 @@ class App(QWidget):
     
     def makeRadioButtonBox(self, answers):
         radio_button_list = []
+        radio_button_box = QVBoxLayout()
+        
         for answer in answers:
             radio_button_list.append(QRadioButton(answer))
-            
         for n, button in enumerate(radio_button_list):
             self.radio_button_group.addButton(button, n)
-            
-        radio_button_box = QVBoxLayout()
-        radio_button_box.setAlignment(PyQt5.QtCore.Qt.AlignCenter)
-        for button in radio_button_list:
             radio_button_box.addLayout(self.initHBox(button))
-        
         return radio_button_box
+    
+    def initHBox(self, widget1, widget2=None):
+        box = QHBoxLayout()
+        box.addStretch()
+        box.addWidget(widget1)
+        box.addStretch()
+        if widget2 != None:
+            box.addWidget(widget2)
+            box.addStretch()
+        return box
         
     def onNextButtonClick(self):
         
@@ -116,16 +121,6 @@ class App(QWidget):
                 checked_button.setStyleSheet('color: red')
                 self.wrong_points += 1
         self.checked = True
-        
-    def initHBox(self, widget1, widget2=None):
-        box = QHBoxLayout()
-        box.addStretch()
-        box.addWidget(widget1)
-        box.addStretch()
-        if widget2 != None:
-            box.addWidget(widget2)
-            box.addStretch()
-        return box
         
 
 def main():
