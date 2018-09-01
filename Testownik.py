@@ -14,9 +14,13 @@ class App(QWidget):
         super().__init__()
         self.questions = questions
         self.current_question = QLabel(self.questions[0].question)
+		self.grid = QGridLayout(self)
+        self.radio_button_group = QButtonGroup()
+		self.check_button = QPushButton('Check')
+        self.next_button = QPushButton('Next')
         self.counter = 1
-        self.wrongPoints = 0
-        self.goodPoints = 0
+        self.wrong_points = 0
+        self.good_points = 0
         self.checked = False
         self.initUI()
         
@@ -26,7 +30,6 @@ class App(QWidget):
         
         question_box = self.makeQuestionBox()
         
-        self.group = QButtonGroup()
         answers = self.questions[0].getAllAnswers()
         radio_button_list = []
         
@@ -34,7 +37,7 @@ class App(QWidget):
             radio_button_list.append(QRadioButton(answer))
             
         for n, button in enumerate(radio_button_list):
-            self.group.addButton(button, n)
+            self.radio_button_group.addButton(button, n)
             
         shuffle(radio_button_list)
         
@@ -47,9 +50,9 @@ class App(QWidget):
         empty_label = QLabel('')
         empty_label.setMaximumHeight(20)
         
-        self.button1 = QPushButton('Check')
-        self.button2 = QPushButton('Next')
-        button_box = self.initHBox(self.button1, self.button2)
+        self.check_button = QPushButton('Check')
+        self.next_button = QPushButton('Next')
+        button_box = self.initHBox(self.check_button, self.next_button)
         
         self.grid = QGridLayout(self)
         self.grid.addLayout(question_box, 1, 1)
@@ -58,8 +61,8 @@ class App(QWidget):
         self.grid.addLayout(button_box, 5, 1)
         self.grid.setAlignment(PyQt5.QtCore.Qt.AlignRight)
         
-        self.button1.clicked.connect(self.onCheckButtonClick)
-        self.button2.clicked.connect(self.onNextButtonClick)
+        self.check_button.clicked.connect(self.onCheckButtonClick)
+        self.next_button.clicked.connect(self.onNextButtonClick)
         
         self.show()
         
@@ -74,16 +77,16 @@ class App(QWidget):
         
         self.checked = False
         
-        for button in self.group.buttons():
+        for button in self.radio_button_group.buttons():
             button.setStyleSheet('color: black')
             
         if self.counter < len(self.questions):
-        	self.current_question.setText(self.questions[self.counter].question)
+            self.current_question.setText(self.questions[self.counter].question)
             
             answers = self.questions[self.counter].getAllAnswers()
             shuffle(answers)
             
-            for n, button in enumerate(self.group.buttons()):
+            for n, button in enumerate(self.radio_button_group.buttons()):
                 button.setText(answers[n])
             
             self.counter += 1
@@ -91,30 +94,30 @@ class App(QWidget):
         else:
             self.current_question.setText('The end!')
             
-            for button in self.group.buttons():
+            for button in self.radio_button_group.buttons():
                 button.deleteLater()
             
-            good_points_label = QLabel('Good answers: ' + str(self.goodPoints))
-            wrong_points_label = QLabel('Wrong answers: ' + str(self.wrongPoints))
+            good_points_label = QLabel('Good answers: ' + str(self.good_points))
+            wrong_points_label = QLabel('Wrong answers: ' + str(self.wrong_points))
             
             pointsLayout = self.initHBox(good_points_label, wrong_points_label)
             self.grid.addLayout(pointsLayout, 2, 1)
             
-            self.button1.setEnabled(False)
-            self.button2.setEnabled(False)
+            self.check_button.setEnabled(False)
+            self.next_button.setEnabled(False)
                     
     def onCheckButtonClick(self):
-        checked_button = self.group.checkedButton()
+        checked_button = self.radio_button_group.checkedButton()
         if self.checked == False:
             if str(checked_button.text()) == self.questions[self.counter - 1].good_answer:
                 checked_button.setStyleSheet('color: green')
-                self.goodPoints += 1
+                self.good_points += 1
             else:
-                for button in self.group.buttons():
+                for button in self.radio_button_group.buttons():
                     if  str(button.text()) == self.questions[self.counter - 1].good_answer:
                         button.setStyleSheet('color: green')
                 checked_button.setStyleSheet('color: red')
-                self.wrongPoints += 1
+                self.wrong_points += 1
         self.checked = True
         
     def initHBox(self, widget1, widget2=None):
