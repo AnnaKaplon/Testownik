@@ -28,33 +28,15 @@ class App(QWidget):
         self.setGeometry(200, 200, 450, 300)
         self.setWindowTitle('Testownik')
         
-        question_box = self.makeQuestionBox()
-        
         answers = self.questions[0].getAllAnswers()
-        radio_button_list = []
+        shuffle(answers)
         
-        for answer in answers:
-            radio_button_list.append(QRadioButton(answer))
-            
-        for n, button in enumerate(radio_button_list):
-            self.radio_button_group.addButton(button, n)
-            
-        shuffle(radio_button_list)
-        
-        radio_button_box = QVBoxLayout()
-        radio_button_box.setAlignment(PyQt5.QtCore.Qt.AlignCenter)
-        
-        for button in radio_button_list:
-            radio_button_box.addLayout(self.initHBox(button))
-        
+        question_box = self.makeQuestionBox()
+        radio_button_box = self.makeRadioButtonBox(answers)
+        button_box = self.initHBox(self.check_button, self.next_button)
         empty_label = QLabel('')
         empty_label.setMaximumHeight(20)
         
-        self.check_button = QPushButton('Check')
-        self.next_button = QPushButton('Next')
-        button_box = self.initHBox(self.check_button, self.next_button)
-        
-        #self.grid = QGridLayout(self)
         self.grid.addLayout(question_box, 1, 1)
         self.grid.addLayout(radio_button_box, 2, 1)
         self.grid.addWidget(empty_label, 3, 1)
@@ -73,8 +55,20 @@ class App(QWidget):
         self.current_question.setFont(font)
         return self.initHBox(self.current_question)
     
-    def makeRadioButtonBox(self):
-        pass
+    def makeRadioButtonBox(self, answers):
+        radio_button_list = []
+        for answer in answers:
+            radio_button_list.append(QRadioButton(answer))
+            
+        for n, button in enumerate(radio_button_list):
+            self.radio_button_group.addButton(button, n)
+            
+        radio_button_box = QVBoxLayout()
+        radio_button_box.setAlignment(PyQt5.QtCore.Qt.AlignCenter)
+        for button in radio_button_list:
+            radio_button_box.addLayout(self.initHBox(button))
+        
+        return radio_button_box
         
     def onNextButtonClick(self):
         
