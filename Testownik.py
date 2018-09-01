@@ -14,9 +14,9 @@ class App(QWidget):
         super().__init__()
         self.questions = questions
         self.current_question = QLabel(self.questions[0].question)
-		self.grid = QGridLayout(self)
+        self.grid = QGridLayout(self)
         self.radio_button_group = QButtonGroup()
-		self.check_button = QPushButton('Check')
+        self.check_button = QPushButton('Check')
         self.next_button = QPushButton('Next')
         self.counter = 1
         self.wrong_points = 0
@@ -54,7 +54,7 @@ class App(QWidget):
         self.next_button = QPushButton('Next')
         button_box = self.initHBox(self.check_button, self.next_button)
         
-        self.grid = QGridLayout(self)
+        #self.grid = QGridLayout(self)
         self.grid.addLayout(question_box, 1, 1)
         self.grid.addLayout(radio_button_box, 2, 1)
         self.grid.addWidget(empty_label, 3, 1)
@@ -72,6 +72,9 @@ class App(QWidget):
         self.current_question.setMaximumHeight(50)
         self.current_question.setFont(font)
         return self.initHBox(self.current_question)
+    
+    def makeRadioButtonBox(self):
+        pass
         
     def onNextButtonClick(self):
         
