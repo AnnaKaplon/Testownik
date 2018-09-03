@@ -83,16 +83,8 @@ class App(QWidget):
             button.setStyleSheet('color: black')
             
         if self.counter < len(self.questions):
-            self.current_question.setText(self.questions[self.counter].question)
-            
-            answers = self.questions[self.counter].getAllAnswers()
-            shuffle(answers)
-            
-            for n, button in enumerate(self.radio_button_group.buttons()):
-                button.setText(answers[n])
-            
+            self.changeQuestion()
             self.counter += 1
-            
         else:
             self.current_question.setText('The end!')
             
@@ -107,6 +99,14 @@ class App(QWidget):
             
             self.check_button.setEnabled(False)
             self.next_button.setEnabled(False)
+            
+    def changeQuestion(self):
+        answers = self.questions[self.counter].getAllAnswers()
+        shuffle(answers)
+        
+        self.current_question.setText(self.questions[self.counter].question)
+        for n, button in enumerate(self.radio_button_group.buttons()):
+                button.setText(answers[n])
                     
     def onCheckButtonClick(self):
         checked_button = self.radio_button_group.checkedButton()
