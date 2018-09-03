@@ -31,8 +31,8 @@ class App(QWidget):
         answers = self.questions[0].getAllAnswers()
         shuffle(answers)
         
-        question_box = self.makeQuestionBox()
-        radio_button_box = self.makeRadioButtonBox(answers)
+        question_box = self.createQuestionBox()
+        radio_button_box = self.createRadioButtonBox(answers)
         button_box = self.initHBox(self.check_button, self.next_button)
         empty_label = QLabel('')
         empty_label.setMaximumHeight(20)
@@ -47,14 +47,14 @@ class App(QWidget):
         
         self.show()
         
-    def makeQuestionBox(self):
+    def createQuestionBox(self):
         font = QFont()
         font.setPointSize(15)
         self.current_question.setMaximumHeight(50)
         self.current_question.setFont(font)
         return self.initHBox(self.current_question)
     
-    def makeRadioButtonBox(self, answers):
+    def createRadioButtonBox(self, answers):
         radio_button_list = []
         radio_button_box = QVBoxLayout()
         
@@ -76,26 +76,25 @@ class App(QWidget):
         return box
         
     def onNextButtonClick(self):
-        
-        self.checked = False
-        
         for button in self.radio_button_group.buttons():
             button.setStyleSheet('color: black')
             
         if self.counter < len(self.questions):
             self.changeQuestion()
             self.counter += 1
+            self.checked = False
         else:
             self.current_question.setText('The end!')
             
             for button in self.radio_button_group.buttons():
                 button.deleteLater()
            
-            points_box = self.makePointsBox()
+            points_box = self.createPointsBox()
             self.grid.addLayout(points_box, 2, 1)
             
             self.check_button.setEnabled(False)
             self.next_button.setEnabled(False)
+            
             
     def changeQuestion(self):
         answers = self.questions[self.counter].getAllAnswers()
@@ -105,7 +104,7 @@ class App(QWidget):
         for n, button in enumerate(self.radio_button_group.buttons()):
                 button.setText(answers[n])
     
-    def makePointsBox(self):
+    def createPointsBox(self):
         good_points_label = QLabel('Good answers: ' + str(self.good_points))
         wrong_points_label = QLabel('Wrong answers: ' + str(self.wrong_points))
         return self.initHBox(good_points_label, wrong_points_label)
