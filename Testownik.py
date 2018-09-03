@@ -109,18 +109,29 @@ class App(QWidget):
                 button.setText(answers[n])
                     
     def onCheckButtonClick(self):
-        checked_button = self.radio_button_group.checkedButton()
+        answer = self.questions[self.counter - 1].good_answer
+        try:
+            checked_button_text = str(self.radio_button_group.checkedButton().text())
+        except AttributeError:
+            checked_button_text = None
+            
         if self.checked == False:
-            if str(checked_button.text()) == self.questions[self.counter - 1].good_answer:
+            if checked_button_text == answer:
                 checked_button.setStyleSheet('color: green')
                 self.good_points += 1
-            else:
-                for button in self.radio_button_group.buttons():
-                    if  str(button.text()) == self.questions[self.counter - 1].good_answer:
-                        button.setStyleSheet('color: green')
+            elif checked_button_text == None:
+                self.makeAnswerGreen(answer)
+                self.wrong_points += 1
+            else:   
+                self.makeAnswerGreen(answer)
                 checked_button.setStyleSheet('color: red')
                 self.wrong_points += 1
         self.checked = True
+        
+    def makeAnswerGreen(self, answer):
+        for button in self.radio_button_group.buttons():
+                if  str(button.text()) == answer:
+                    button.setStyleSheet('color: green')
         
 
 def main():
