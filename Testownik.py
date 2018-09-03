@@ -112,6 +112,7 @@ class App(QWidget):
                     
     def onCheckButtonClick(self):
         answer = self.questions[self.counter - 1].good_answer
+        checked_button = self.radio_button_group.checkedButton()
         try:
             checked_button_text = str(self.radio_button_group.checkedButton().text())
         except AttributeError:
