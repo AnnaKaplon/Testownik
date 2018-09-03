@@ -90,12 +90,9 @@ class App(QWidget):
             
             for button in self.radio_button_group.buttons():
                 button.deleteLater()
-            
-            good_points_label = QLabel('Good answers: ' + str(self.good_points))
-            wrong_points_label = QLabel('Wrong answers: ' + str(self.wrong_points))
-            
-            pointsLayout = self.initHBox(good_points_label, wrong_points_label)
-            self.grid.addLayout(pointsLayout, 2, 1)
+           
+            points_box = self.makePointsBox()
+            self.grid.addLayout(points_box, 2, 1)
             
             self.check_button.setEnabled(False)
             self.next_button.setEnabled(False)
@@ -107,6 +104,11 @@ class App(QWidget):
         self.current_question.setText(self.questions[self.counter].question)
         for n, button in enumerate(self.radio_button_group.buttons()):
                 button.setText(answers[n])
+    
+    def makePointsBox(self):
+        good_points_label = QLabel('Good answers: ' + str(self.good_points))
+        wrong_points_label = QLabel('Wrong answers: ' + str(self.wrong_points))
+        return self.initHBox(good_points_label, wrong_points_label)
                     
     def onCheckButtonClick(self):
         answer = self.questions[self.counter - 1].good_answer
