@@ -5,7 +5,7 @@ from PyQt5.QtGui import QFont
 import PyQt5.QtCore
 import sys
 from random import shuffle
-from GetData import Question, getData
+from Question import Question, getData
 
 
 class App(QWidget):
