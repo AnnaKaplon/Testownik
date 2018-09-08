@@ -6,29 +6,26 @@ import PyQt5.QtCore
 import sys
 from random import shuffle
 from Question import Question, getData
+from QuestionListController import QuestionListController
 
 
 class App(QWidget):
     
     def __init__(self,  questions):
         super().__init__()
-        self.questions = questions
-        self.current_question = QLabel(self.questions[0].question)
+        self.question_label = QLabel()
         self.grid = QGridLayout(self)
         self.radio_button_group = QButtonGroup()
         self.check_button = QPushButton('Check')
         self.next_button = QPushButton('Next')
-        self.counter = 1
-        self.wrong_points = 0
-        self.good_points = 0
-        self.checked = False
+        self.controller = QuestionListController(questions)
         self.initUI()
         
     def initUI(self):
         self.setGeometry(200, 200, 450, 300)
         self.setWindowTitle('Testownik')
         
-        answers = self.questions[0].getAllAnswers()
+        answers = self.controller.getCurrentAnswers()
         shuffle(answers)
         
         question_box = self.createQuestionBox()
@@ -50,9 +47,10 @@ class App(QWidget):
     def createQuestionBox(self):
         font = QFont()
         font.setPointSize(15)
-        self.current_question.setMaximumHeight(50)
-        self.current_question.setFont(font)
-        return self.initHBox(self.current_question)
+        self.question_label.setText(self.controller.getCurrentQuestion())
+        self.question_label.setMaximumHeight(50)
+        self.question_label.setFont(font)
+        return self.initHBox(self.question_label)
     
     def createRadioButtonBox(self, answers):
         radio_button_list = []
@@ -79,12 +77,11 @@ class App(QWidget):
         for button in self.radio_button_group.buttons():
             button.setStyleSheet('color: black')
             
-        if self.counter < len(self.questions):
+        self.controller.loadNewQuestion()
+        if not self.controller.getCompleted():
             self.changeQuestion()
-            self.counter += 1
-            self.checked = False
         else:
-            self.current_question.setText('The end!')
+            self.question_label.setText('The end!')
             
             for button in self.radio_button_group.buttons():
                 button.deleteLater()
@@ -97,16 +94,16 @@ class App(QWidget):
             
             
     def changeQuestion(self):
-        answers = self.questions[self.counter].getAllAnswers()
+        answers = self.controller.getCurrentAnswers()
         shuffle(answers)
         
-        self.current_question.setText(self.questions[self.counter].question)
+        self.question_label.setText(self.controller.getCurrentQuestion())
         for n, button in enumerate(self.radio_button_group.buttons()):
                 button.setText(answers[n])
     
     def createPointsBox(self):
-        good_points_label = QLabel('Good answers: ' + str(self.good_points))
-        wrong_points_label = QLabel('Wrong answers: ' + str(self.wrong_points))
+        good_points_label = QLabel('Good answers: ' + str(self.controller.getGoodPoints()))
+        wrong_points_label = QLabel('Wrong answers: ' + str(self.controller.getWrongPoints()))
         return self.initHBox(good_points_label, wrong_points_label)
                     
     def onCheckButtonClick(self):
@@ -144,3 +141,4 @@ def main():
     
 if __name__ == "__main__":
     main()
+
