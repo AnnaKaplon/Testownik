@@ -12,6 +12,9 @@ class Question():
     def getAllAnswers(self):
         return [self.good_answer] + self.wrong_answers
     
+    def getQuestion(self):
+        return self.question
+    
 
 def getData():
     df = pd.read_csv('Example.csv', encoding = 'utf-8')
