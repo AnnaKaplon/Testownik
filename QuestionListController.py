@@ -12,10 +12,16 @@ class QuestionListController():
         self.completed = False
         
     def getCurrentQuestion(self):
-        return self.current_question.question
+        return self.current_question.getQuestion()
     
     def getCurrentAnswers(self):
         return self.current_question.getAllAnswers()
+    
+    def getWrongPoints(self):
+        return self.goog_points
+    
+    def getGoodPoints(self):
+        return self.wrong_points
     
     def getCompleted(self):
         return self.completed
@@ -23,5 +29,6 @@ class QuestionListController():
     def loadNewQuestion(self):
         if self.counter < len(self.questions):
             self.current_question = self.questions[self.counter]
+            self.counter += 1
         else:
             self.completed = True
