@@ -18,7 +18,7 @@ class QuestionListController():
         return self.current_question.getAllAnswers()
     
     def getWrongPoints(self):
-        return self.goog_points
+        return self.good_points
     
     def getGoodPoints(self):
         return self.wrong_points
