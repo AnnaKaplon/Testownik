@@ -1,3 +1,4 @@
+import easygui
 import pandas as pd
 from random import shuffle
 
@@ -14,7 +15,8 @@ class Question():
     
 
 def getData():
-    df = pd.read_csv('Example.csv', encoding = 'utf-8')
+    path = easygui.fileopenbox()
+    df = pd.read_csv(path, encoding = 'utf-8')
     questions = []
     for _, row in df.iterrows():
         wrong_answers_list = [answer for (key, answer) in row.items() if key != 'question' and key != 'good_answer']
