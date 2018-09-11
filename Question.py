@@ -12,6 +12,9 @@ class Question():
     def getAllAnswers(self):
         return [self.good_answer] + self.wrong_answers
     
+    def getGoodAnswer(self):
+        return self.good_answer
+    
     def getQuestion(self):
         return self.question
     
