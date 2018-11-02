@@ -89,8 +89,8 @@ class App(QWidget):
             points_box = self.createPointsBox()
             self.grid.addLayout(points_box, 2, 1)
 
-            self.check_button.setEnabled(False)
-            self.next_button.setEnabled(False)
+            self.check_button.setParent(None)
+            self.next_button.setParent(None)
 
 
     def changeQuestion(self):
