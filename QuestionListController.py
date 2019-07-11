@@ -1,48 +1,41 @@
-class QuestionListController():
+class QuestionListController:
 
     def __init__(self, questions):
         self.questions = questions
-        self.current_question = self.questions[0]
+        self._current_question = self.questions[0]
         self.counter = 1
         self.wrong_points = 0
         self.good_points = 0
         self.checked = False
         self.completed = False
-        
-    def getCurrentQuestion(self):
-        return self.current_question.getQuestion()
+
+    @property
+    def current_question(self):
+        return self._current_question.question
+
+    @property
+    def current_answers(self):
+        return self._current_question.all_answers
     
-    def getCurrentAnswers(self):
-        return self.current_question.getAllAnswers()
-    
-    def getWrongPoints(self):
-        return self.good_points
-    
-    def getGoodPoints(self):
-        return self.wrong_points
-    
-    def getCompleted(self):
-        return self.completed
-    
-    def loadNewQuestion(self):
+    def load_new_question(self):
         if self.counter < len(self.questions):
-            self.current_question = self.questions[self.counter]
+            self._current_question = self.questions[self.counter]
             self.counter += 1
             self.checked = False
         else:
             self.completed = True
             
-    def checkAnswer(self, clicked_answer):
-        if self.checked == True:
+    def check_answer(self, clicked_answer):
+        if self.checked:
             return None, None
         
         self.checked = True
-        good_answer = self.current_question.getGoodAnswer()
+        good_answer = self._current_question.good_answer
         
         if clicked_answer == good_answer:
             self.good_points += 1
             return clicked_answer, None
-        elif clicked_answer == None:
+        elif clicked_answer is None:
             self.wrong_points += 1
             return good_answer, None
         else:
