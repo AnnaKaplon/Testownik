@@ -1,5 +1,3 @@
-from Question import Question, getData
-
 class QuestionListController():
 
     def __init__(self, questions):

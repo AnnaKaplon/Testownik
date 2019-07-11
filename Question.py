@@ -1,6 +1,7 @@
+from random import shuffle
+
 import easygui
 import pandas as pd
-from random import shuffle
 
 
 class Question():

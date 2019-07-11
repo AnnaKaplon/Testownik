@@ -1,10 +1,12 @@
+import sys
+from random import shuffle
+
 from PyQt5.QtWidgets import (QWidget, QApplication, QLabel,
                              QHBoxLayout, QVBoxLayout, QButtonGroup,
                              QRadioButton, QPushButton, QGridLayout)
 from PyQt5.QtGui import QFont
 import PyQt5.QtCore
-import sys
-from random import shuffle
+
 from Question import Question, getData
 from QuestionListController import QuestionListController
 
