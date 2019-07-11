@@ -1,5 +1,6 @@
-import sys
 from random import shuffle
+import sys
+from typing import List, Optional
 
 from PyQt5.QtWidgets import (QWidget, QApplication, QLabel,
                              QHBoxLayout, QVBoxLayout, QButtonGroup,
@@ -19,10 +20,11 @@ class App(QWidget):
         self.radio_button_group = QButtonGroup()
         self.check_button = QPushButton('Check')
         self.next_button = QPushButton('Next')
-        self.controller = QuestionListController(questions)
+        self.controller = QuestionListController(questions=questions)
         self.init_ui()
 
-    def init_ui(self):
+    def init_ui(self) -> None:
+        """Creates user interface"""
         self.setGeometry(200, 200, 450, 300)
         self.setWindowTitle('Testownik')
 
@@ -45,7 +47,8 @@ class App(QWidget):
 
         self.show()
 
-    def create_question_box(self):
+    def create_question_box(self) -> QHBoxLayout:
+        """Creates box with text of current question"""
         font = QFont()
         font.setPointSize(15)
         self.question_label.setText(self.controller.current_question)
@@ -53,7 +56,8 @@ class App(QWidget):
         self.question_label.setFont(font)
         return self.init_hbox(self.question_label)
 
-    def create_radio_button_box(self, answers):
+    def create_radio_button_box(self, answers: List[str]) -> QVBoxLayout:
+        """Creates box with answers"""
         radio_button_list = [QRadioButton(answer) for answer in answers]
         radio_button_box = QVBoxLayout()
         for n, button in enumerate(radio_button_list):
@@ -61,7 +65,8 @@ class App(QWidget):
             radio_button_box.addLayout(self.init_hbox(button))
         return radio_button_box
 
-    def init_hbox(self, widget1, widget2=None):
+    def init_hbox(self, widget1: QWidget, widget2: Optional[QWidget] = None) -> QHBoxLayout:
+        """Creates centred horizontal box with one or two widgets"""
         box = QHBoxLayout()
         box.addStretch()
         box.addWidget(widget1)
@@ -71,7 +76,8 @@ class App(QWidget):
             box.addStretch()
         return box
 
-    def on_next_button_click(self):
+    def on_next_button_click(self) -> None:
+        """Displays new question or ends test."""
         self.controller.load_new_question()
 
         if not self.controller.completed:
@@ -91,7 +97,8 @@ class App(QWidget):
             self.check_button.setParent(None)
             self.next_button.setParent(None)
 
-    def change_question(self):
+    def change_question(self) -> None:
+        """Changes question and answers in boxes"""
         answers = self.controller.current_answers
         shuffle(answers)
 
@@ -99,12 +106,14 @@ class App(QWidget):
         for n, button in enumerate(self.radio_button_group.buttons()):
             button.setText(answers[n])
 
-    def create_points_box(self):
+    def create_points_box(self) -> QHBoxLayout:
+        """Creates box with points summary"""
         good_points_label = QLabel('Good answers: ' + str(self.controller.good_points))
         wrong_points_label = QLabel('Wrong answers: ' + str(self.controller.wrong_points))
         return self.init_hbox(good_points_label, wrong_points_label)
 
-    def on_check_button_click(self):
+    def on_check_button_click(self) -> None:
+        """Colours answers."""
         try:
             checked_button_text = str(self.radio_button_group.checkedButton().text())
         except AttributeError:
@@ -117,7 +126,8 @@ class App(QWidget):
         if to_make_red is not None:
             self.colour_answer(to_make_red, 'red')
 
-    def colour_answer(self, answer, colour):
+    def colour_answer(self, answer: str, colour: str):
+        """Sets given colour to given answer"""
         for button in self.radio_button_group.buttons():
             if str(button.text()) == answer:
                 button.setStyleSheet(f'color: {colour}')

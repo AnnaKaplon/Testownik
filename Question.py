@@ -1,15 +1,20 @@
 from random import shuffle
+from typing import List
 
+import attr
 import easygui
 import pandas as pd
 
 
+@attr.s
 class Question:
 
-    def __init__(self, question, good_answer, wrong_answers):
-        self.question = question
-        self.good_answer = good_answer
-        self.wrong_answers = wrong_answers
+    question: str = attr.ib()
+    """Text of question."""
+
+    good_answer: str = attr.ib()
+
+    wrong_answers: List[str] = attr.ib()
 
     @property
     def all_answers(self):
@@ -23,7 +28,11 @@ def get_data():
     questions = []
     for _, row in df.iterrows():
         wrong_answers_list = [answer for (key, answer) in row.items() if key != 'question' and key != 'good_answer']
-        questions.append(Question(row['question'], row['good_answer'], wrong_answers_list))
+        questions.append(Question(
+            question=row['question'],
+            good_answer=row['good_answer'],
+            wrong_answers=wrong_answers_list)
+        )
 
     shuffle(questions)
     return questions
