@@ -3,3 +3,6 @@ __pycache__/
 
 # Text editor files
 .idea/
+
+# Pytest cache
+.pytest_cache/  
