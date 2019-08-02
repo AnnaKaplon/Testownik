@@ -2,7 +2,7 @@ from typing import List, Tuple, Optional
 
 import attr
 
-from question import Question
+from testownik.question import Question
 
 @attr.s
 class QuestionListController:

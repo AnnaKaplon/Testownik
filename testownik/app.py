@@ -7,8 +7,8 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QLabel,
                              QRadioButton, QPushButton, QGridLayout)
 from PyQt5.QtGui import QFont
 
-from question import get_data
-from controller import QuestionListController
+from testownik.question import get_data
+from testownik.controller import QuestionListController
 
 
 class App(QWidget):
